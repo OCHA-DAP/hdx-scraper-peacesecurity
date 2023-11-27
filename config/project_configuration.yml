@@ -6,3 +6,16 @@ datasets:
   - "DPO-UCHISTORICAL"
   - "DPPADPOSS-FATALITIES"
   - "DPPADPOSS-PKO"
+
+dataset_dates:
+  DPO-UCLATEST:
+    - "last_reporting_date"
+  DPO-UCHISTORICAL:
+    - "last_reporting_date"
+  DPPADPOSS-FATALITIES:
+    - "incident_date"
+    - "last_update"
+  DPPADPOSS-PKO:
+    - "start_date"
+    - "end_date"
+    - "last_update"
