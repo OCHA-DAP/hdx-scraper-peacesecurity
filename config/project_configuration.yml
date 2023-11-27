@@ -1,0 +1,8 @@
+# Collector specific configuration
+base_url: "https://api.psdata.un.org/public/"
+
+datasets:
+  - "DPO-UCLATEST"
+  - "DPO-UCHISTORICAL"
+  - "DPPADPOSS-FATALITIES"
+  - "DPPADPOSS-PKO"
