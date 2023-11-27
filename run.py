@@ -32,10 +32,10 @@ def main(save: bool = False, use_saved: bool = False) -> None:
             batch = info["batch"]
             configuration = Configuration.read()
             peacesecurity = PeaceSecurity(configuration, retriever, folder)
-            datasets = peacesecurity.get_data()
-            logger.info(f"Number of datasets to upload: {len(datasets)}")
+            dataset_names = peacesecurity.get_data()
+            logger.info(f"Number of datasets to upload: {len(dataset_names)}")
 
-            for _, nextdict in progress_storing_folder(info, datasets, "name"):
+            for _, nextdict in progress_storing_folder(info, dataset_names, "name"):
                 dataset_name = nextdict["name"]
                 dataset, showcase = peacesecurity.generate_dataset_and_showcase(dataset_name)
                 if dataset:
