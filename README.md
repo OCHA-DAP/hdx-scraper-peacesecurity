@@ -1,8 +1,8 @@
-### Collector for UN Peacekeeping's Datasets
-[![Build Status](https://github.com/OCHA-DAP/hdx-scraper-peacekeeping/actions/workflows/run-python-tests.yml/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-peacekeeping/actions/workflows/run-python-tests.yml)
-[![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-peacekeeping/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-peacekeeping?branch=main)
+### Collector for Peace and Security Pillar Datasets
+[![Build Status](https://github.com/OCHA-DAP/hdx-scraper-peacesecurity/actions/workflows/run-python-tests.yml/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-peacesecurity/actions/workflows/run-python-tests.yml)
+[![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-peacesecurity/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-peacesecurity?branch=main)
 
-This script connects to the [UN Peacekeeping API](https://psdata.un.org/) and extracts data from 4 endpoints creating 4 datasets in HDX. It makes 4 reads from the data hub and 4 read/writes (API calls) to HDX in a one hour period. It creates 4 temporary files each a few Kb which it uploads into HDX. It is run every day.
+This script connects to the [Peace and Security API](https://psdata.un.org/) and extracts data and metadata from 8 endpoints creating 4 datasets in HDX. It makes 8 reads from the data hub and 4 read/writes (API calls) to HDX in a one hour period. It creates 4 temporary files each a few Kb which it uploads into HDX. It is run every day.
 
 
 ### Usage
