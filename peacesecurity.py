@@ -68,6 +68,7 @@ class PeaceSecurity:
         tags.add("peacekeeping")
         for tag in metadata["Tags"]:
             tags.add(tag["Tag"].lower())
+        tags = sorted(tags)
         dataset.add_tags(tags)
 
         start_date = metadata["Start Range"]
