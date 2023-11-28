@@ -75,13 +75,17 @@ class PeaceSecurity:
         ongoing = True
         if end_date:
             ongoing = False
+        if not start_date:
+            start_date = datetime.today()
         dataset.set_reference_period(start_date, end_date, ongoing)
 
         for row in rows:
             dates = self.configuration["dataset_dates"][dataset_name]
             for date in dates:
                 row_date = row[date]
-                if len(str(row_date)) == 13:
+                if not row_date:
+                    continue
+                if len(str(row_date)) > 9:
                     row_date = row_date / 1000
                 row_date = datetime.utcfromtimestamp(row_date)
                 row_date = row_date.strftime("%Y-%m-%d")
