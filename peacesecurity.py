@@ -67,7 +67,7 @@ class PeaceSecurity:
         tags.add("complex emergency-conflict-security")
         tags.add("peacekeeping")
         for tag in metadata["Tags"]:
-            tags.add(tag["Tag"])
+            tags.add(tag["Tag"].lower())
         dataset.add_tags(tags)
 
         start_date = metadata["Start Range"]
@@ -104,7 +104,7 @@ class PeaceSecurity:
                 "title": f"{dataset['title']} Showcase",
                 "notes": dataset["notes"],
                 "url": metadata["Visualization Link"],
-                "image_url": "",
+                "image_url": "https://data.humdata.org/image/2018-03-26-152458.335430United-Nations-Peacekeeping-whitebg.jpg",
             }
         )
         showcase.add_tags(tags)

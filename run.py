@@ -46,8 +46,9 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                     dataset.create_in_hdx(
                         remove_additional_resources=True,
                         hxl_update=False,
-                        updated_by_script="HDX Scraper: Peacekeeping",
+                        updated_by_script=updated_by_script,
                         batch=batch,
+                        ignore_fields=["resource:description"],
                     )
                     if showcase:
                         showcase.create_in_hdx()
