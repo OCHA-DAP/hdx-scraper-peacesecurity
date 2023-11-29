@@ -31,8 +31,6 @@ class PeaceSecurity:
         for dataset_name in datasets:
             data_url = f"{base_url}data/{dataset_name}/json"
             meta_url = f"{base_url}metadata/{dataset_name}"
-            if dataset_name == "DPPADPOSS-PKO":
-                data_url = f"{data_url}/?filter=mission_isactive:Yes"
 
             data_json = self.retriever.download_json(data_url)
             meta_json = self.retriever.download_json(meta_url)
