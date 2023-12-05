@@ -9,6 +9,7 @@ import pytest
 from hdx.api.configuration import Configuration
 from hdx.data.vocabulary import Vocabulary
 from hdx.utilities.compare import assert_files_same
+from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
@@ -89,7 +90,9 @@ class TestPeaceSecurity:
                 configuration["datasets"] = ["DPPADPOSS-FATALITIES"]
                 # indicator dataset test
                 peacesecurity = PeaceSecurity(configuration, retriever, folder)
-                dataset_names = peacesecurity.get_data()
+                dataset_names = peacesecurity.get_data(
+                    {"DEFAULT": parse_date("2023-01-01")}
+                )
                 assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
 
                 dataset, showcase = peacesecurity.generate_dataset_and_showcase("DPPADPOSS-FATALITIES")
