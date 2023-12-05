@@ -107,7 +107,7 @@ class PeaceSecurity:
                 "title": f"{dataset['title']} Showcase",
                 "notes": dataset["notes"],
                 "url": metadata["Visualization Link"],
-                "image_url": "https://data.humdata.org/image/2018-03-26-152458.335430United-Nations-Peacekeeping-whitebg.jpg",
+                "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/config/view_dashboard.jpg",
             }
         )
         showcase.add_tags(tags)

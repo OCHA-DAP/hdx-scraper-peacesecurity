@@ -46,7 +46,7 @@ class TestPeaceSecurity:
         "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and SPMs since 1948 Showcase",
         "notes": "This dataset provides figures on staff and peacekeeper fatalities in Peacekeeping and Special Political Missions from 1948-Present, based on the receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The dataset specifies details such as casualty mission, casualty nationality and type of incident.",
         "url": "https://app.powerbi.com/view?r=eyJrIjoiOTFiYTdhZTktNTA4NC00MWE4LWI4Y2EtMGY4MmY0NmNmOGI5IiwidCI6IjBmOWUzNWRiLTU0NGYtNGY2MC1iZGNjLTVlYTQxNmU2ZGM3MCIsImMiOjh9",
-        "image_url": "https://data.humdata.org/image/2018-03-26-152458.335430United-Nations-Peacekeeping-whitebg.jpg",
+        "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/config/view_dashboard.jpg",
         "tags": [
             {"name": "complex emergency-conflict-security", "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87"},
             {"name": "fatalities", "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87"},
