@@ -11,6 +11,7 @@ from datetime import datetime
 
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
+from hdx.utilities.dateparse import parse_date
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
@@ -24,7 +25,7 @@ class PeaceSecurity:
         self.dataset_data = {}
         self.metadata = {}
 
-    def get_data(self):
+    def get_data(self, state):
         base_url = self.configuration["base_url"]
         datasets = self.configuration["datasets"]
 
@@ -35,8 +36,13 @@ class PeaceSecurity:
             data_json = self.retriever.download_json(data_url)
             meta_json = self.retriever.download_json(meta_url)
 
-            self.dataset_data[dataset_name] = data_json
-            self.metadata[dataset_name] = meta_json[0]
+            last_update_date = meta_json[0]["Last Update Date"]
+            last_update_date = parse_date(last_update_date)
+            if last_update_date > state.get(dataset_name, state["DEFAULT"]):
+                state[dataset_name] = last_update_date
+
+                self.dataset_data[dataset_name] = data_json
+                self.metadata[dataset_name] = meta_json[0]
 
         return [{"name": dataset_name} for dataset_name in sorted(self.dataset_data)]
 
