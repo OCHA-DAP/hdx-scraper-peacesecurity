@@ -75,7 +75,8 @@ class PeaceSecurity:
         if end_date:
             ongoing = False
         if not start_date:
-            start_date = datetime.today()
+            logger.error(f"Start date missing for {dataset_name}")
+            return None, None
         dataset.set_reference_period(start_date, end_date, ongoing)
 
         for row in rows:
