@@ -24,7 +24,7 @@ class TestPeaceSecurity:
         "dataset_date": "[1948-01-01T00:00:00 TO *]",
         "groups": [{"name": "world"}],
         "maintainer": "0d34fa8f-de81-43cc-9c1b-7053455e2e74",
-        "name": "dppadposs-fatalities",
+        "name": "peacekeeping-fatalities",
         "notes": "This dataset provides figures on staff and peacekeeper fatalities in Peacekeeping and Special Political Missions from 1948-Present, based on the receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The dataset specifies details such as casualty mission, casualty nationality and type of incident.",
         "owner_org": "8cb62b36-c3cc-4c7a-aae7-a63e2d480ffc",
         "subnational": "0",

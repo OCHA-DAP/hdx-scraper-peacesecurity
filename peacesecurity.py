@@ -50,9 +50,9 @@ class PeaceSecurity:
         rows = self.dataset_data[dataset_name]
         metadata = self.metadata[dataset_name]
 
-        name = metadata["Dataset ID"]
+        name = self.configuration["dataset_names"].get(dataset_name, metadata["Dataset ID"])
         title = f"Peace and Security Pillar: {metadata['Name']}"
-        dataset = Dataset({"name": slugify(name).lower(), "title": title})
+        dataset = Dataset({"name": slugify(name), "title": title})
         dataset.set_maintainer("0d34fa8f-de81-43cc-9c1b-7053455e2e74")
         dataset.set_organization("8cb62b36-c3cc-4c7a-aae7-a63e2d480ffc")
         update_frequency = metadata["Update Frequency"]
@@ -111,7 +111,7 @@ class PeaceSecurity:
 
         showcase = Showcase(
             {
-                "name": f"{dataset['name']}-showcase",
+                "name": f"{slugify(dataset_name)}-showcase",
                 "title": f"{dataset['title']} Showcase",
                 "notes": dataset["notes"],
                 "url": metadata["Visualization Link"],

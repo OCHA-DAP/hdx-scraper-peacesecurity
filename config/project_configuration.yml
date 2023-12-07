@@ -6,3 +6,9 @@ datasets:
   - "DPO-UCHISTORICAL"
   - "DPPADPOSS-FATALITIES"
   - "DPPADPOSS-PKO"
+
+dataset_names:
+  DPO-UCLATEST: "peacekeeping-uniformed-contributions-by-rank-of-tcc-pcc"
+  DPO-UCHISTORICAL: "peacekeeping-uniformed-contributions-by-gender"
+  DPPADPOSS-FATALITIES: "peacekeeping-fatalities"
+  DPPADPOSS-PKO: "peacekeeping-core-dataset-active-missions"
