@@ -85,17 +85,18 @@ class PeaceSecurity:
             return None, None
         dataset.set_reference_period(start_date, end_date, ongoing)
 
+        headers = rows[0].keys()
+        date_headers = [h for h in headers if "date" in h.lower() and type(rows[0][h]) == int]
         for row in rows:
-            dates = self.configuration["dataset_dates"][dataset_name]
-            for date in dates:
-                row_date = row[date]
+            for date_header in date_headers:
+                row_date = row[date_header]
                 if not row_date:
                     continue
                 if len(str(row_date)) > 9:
                     row_date = row_date / 1000
                 row_date = datetime.utcfromtimestamp(row_date)
                 row_date = row_date.strftime("%Y-%m-%d")
-                row[date] = row_date
+                row[date_header] = row_date
 
         dataset.generate_resource_from_rows(
             self.folder,
