@@ -87,11 +87,10 @@ class TestPeaceSecurity:
         ) as folder:
             with Download() as downloader:
                 retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
-                configuration["datasets"] = ["DPPADPOSS-FATALITIES"]
-                # indicator dataset test
                 peacesecurity = PeaceSecurity(configuration, retriever, folder)
                 dataset_names = peacesecurity.get_data(
-                    {"DEFAULT": parse_date("2023-01-01")}
+                    {"DEFAULT": parse_date("2023-01-01")},
+                    datasets="DPPADPOSS-FATALITIES",
                 )
                 assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
 

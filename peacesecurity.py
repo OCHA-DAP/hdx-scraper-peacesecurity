@@ -7,7 +7,7 @@ Reads Peace and Security JSONs and creates datasets.
 
 """
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
@@ -25,24 +25,26 @@ class PeaceSecurity:
         self.dataset_data = {}
         self.metadata = {}
 
-    def get_data(self, state):
+    def get_data(self, state, datasets=None):
         base_url = self.configuration["base_url"]
-        datasets = self.configuration["datasets"]
+        meta_url = f"{base_url}metadata/all"
+        meta_jsons = self.retriever.download_json(meta_url)
 
-        for dataset_name in datasets:
-            data_url = f"{base_url}data/{dataset_name}/json"
-            meta_url = f"{base_url}metadata/{dataset_name}"
-
-            data_json = self.retriever.download_json(data_url)
-            meta_json = self.retriever.download_json(meta_url)
-
-            last_update_date = meta_json[0]["Last Update Date"]
-            last_update_date = parse_date(last_update_date)
-            if last_update_date > state.get(dataset_name, state["DEFAULT"]):
-                state[dataset_name] = last_update_date
-
-                self.dataset_data[dataset_name] = data_json
-                self.metadata[dataset_name] = meta_json[0]
+        for meta_json in meta_jsons:
+            dataset_id = meta_json["Dataset ID"]
+            if datasets and dataset_id not in datasets:
+                continue
+            last_update_date = meta_json["Last Update Date"]
+            if last_update_date:
+                last_update_date = parse_date(last_update_date)
+            else:
+                last_update_date = datetime.now(tz=timezone.utc)
+            if last_update_date > state.get(dataset_id, state["DEFAULT"]):
+                data_url = f"{base_url}data/{dataset_id}/json"
+                data_json = self.retriever.download_json(data_url)
+                self.dataset_data[dataset_id] = data_json
+                self.metadata[dataset_id] = meta_json
+                state[dataset_id] = last_update_date
 
         return [{"name": dataset_name} for dataset_name in sorted(self.dataset_data)]
 

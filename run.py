@@ -41,7 +41,10 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                 batch = info["batch"]
                 configuration = Configuration.read()
                 peacesecurity = PeaceSecurity(configuration, retriever, folder)
-                dataset_names = peacesecurity.get_data(state_dict)
+                dataset_names = peacesecurity.get_data(
+                    state_dict,
+                    datasets=["DPO-UCLATEST", "DPO-UCHISTORICAL", "DPPADPOSS-FATALITIES", "DPPADPOSS-PKO"],
+                )
                 logger.info(f"Number of datasets to upload: {len(dataset_names)}")
 
                 for _, nextdict in progress_storing_folder(info, dataset_names, "name"):

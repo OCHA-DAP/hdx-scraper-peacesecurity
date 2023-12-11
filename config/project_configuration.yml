@@ -1,12 +1,6 @@
 # Collector specific configuration
 base_url: "https://api.psdata.un.org/public/"
 
-datasets:
-  - "DPO-UCLATEST"
-  - "DPO-UCHISTORICAL"
-  - "DPPADPOSS-FATALITIES"
-  - "DPPADPOSS-PKO"
-
 dataset_names:
   DPO-UCLATEST: "peacekeeping-uniformed-contributions-by-rank-of-tcc-pcc"
   DPO-UCHISTORICAL: "peacekeeping-uniformed-contributions-by-gender"
