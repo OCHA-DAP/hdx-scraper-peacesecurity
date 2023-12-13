@@ -72,8 +72,9 @@ class PeaceSecurity:
         tags = set()
         tags.add("complex emergency-conflict-security")
         tags.add("peacekeeping")
-        for tag in metadata["Tags"]:
-            tags.add(tag["Tag"].lower())
+        if metadata["Tags"]:
+            for tag in metadata["Tags"]:
+                tags.add(tag["Tag"].lower())
         tags = sorted(tags)
         dataset.add_tags(tags)
 
