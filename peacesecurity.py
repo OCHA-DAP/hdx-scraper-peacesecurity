@@ -75,6 +75,9 @@ class PeaceSecurity:
         if metadata["Tags"]:
             for tag in metadata["Tags"]:
                 tags.add(tag["Tag"].lower())
+        if metadata["Themes"]:
+            for theme in metadata["Themes"]:
+                tags.add(theme["Theme"].lower())
         tags = sorted(tags)
         dataset.add_tags(tags)
 
