@@ -49,7 +49,10 @@ def main(save: bool = False, use_saved: bool = False) -> None:
 
                 for _, nextdict in progress_storing_folder(info, dataset_names, "name"):
                     dataset_name = nextdict["name"]
-                    dataset, showcase = peacesecurity.generate_dataset_and_showcase(dataset_name)
+                    dataset, showcase = peacesecurity.generate_dataset_and_showcase(
+                        dataset_name,
+                        configuration,
+                    )
                     if dataset:
                         dataset.update_from_yaml()
                         dataset["notes"] = dataset["notes"].replace(

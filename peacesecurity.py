@@ -48,7 +48,7 @@ class PeaceSecurity:
 
         return [{"name": dataset_name} for dataset_name in sorted(self.dataset_data)]
 
-    def generate_dataset_and_showcase(self, dataset_name):
+    def generate_dataset_and_showcase(self, dataset_name, configuration):
         rows = self.dataset_data[dataset_name]
         metadata = self.metadata[dataset_name]
 
@@ -78,7 +78,7 @@ class PeaceSecurity:
         if metadata["Themes"]:
             for theme in metadata["Themes"]:
                 tags.add(theme["Theme"].lower())
-        tags = sorted(tags)
+        tags = sorted([t for t in tags if t in configuration["allowed_tags"]])
         dataset.add_tags(tags)
 
         start_date = metadata["Start Range"]

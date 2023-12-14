@@ -6,3 +6,12 @@ dataset_names:
   DPO-UCHISTORICAL: "peacekeeping-uniformed-contributions-by-gender"
   DPPADPOSS-FATALITIES: "peacekeeping-fatalities"
   DPPADPOSS-PKO: "peacekeeping-core-dataset-active-missions"
+
+allowed_tags:
+  - "complex emergency-conflict-security"
+  - "environment"
+  - "fatalities"
+  - "gender"
+  - "logistics"
+  - "military"
+  - "peacekeeping"
