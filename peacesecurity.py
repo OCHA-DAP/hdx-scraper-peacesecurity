@@ -89,7 +89,7 @@ class PeaceSecurity:
         if not start_date:
             logger.error(f"Start date missing for {dataset_name}")
             return None, None
-        dataset.set_reference_period(start_date, end_date, ongoing)
+        dataset.set_time_period(start_date, end_date, ongoing)
 
         headers = rows[0].keys()
         date_headers = [h for h in headers if "date" in h.lower() and type(rows[0][h]) == int]
