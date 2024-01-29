@@ -44,7 +44,7 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                     peacesecurity = PeaceSecurity(configuration, retriever, folder, errors)
                     dataset_names = peacesecurity.get_data(
                         state_dict,
-                        # datasets=["DPO-UCLATEST", "DPO-UCHISTORICAL", "DPPADPOSS-FATALITIES", "DPPADPOSS-PKO"],
+                        datasets=["DPO-UCLATEST", "DPO-UCHISTORICAL", "DPPADPOSS-FATALITIES", "DPPADPOSS-PKO"],
                     )
                     logger.info(f"Number of datasets to upload: {len(dataset_names)}")
 
@@ -75,7 +75,6 @@ def main(save: bool = False, use_saved: bool = False) -> None:
 if __name__ == "__main__":
     facade(
         main,
-        hdx_site="stage",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=lookup,
         project_config_yaml=join("config", "project_configuration.yml")
