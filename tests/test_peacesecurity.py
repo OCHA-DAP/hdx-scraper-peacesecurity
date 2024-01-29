@@ -11,6 +11,7 @@ from hdx.data.vocabulary import Vocabulary
 from hdx.utilities.compare import assert_files_same
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import Download
+from hdx.utilities.errors_onexit import ErrorsOnExit
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
@@ -87,7 +88,7 @@ class TestPeaceSecurity:
         ) as folder:
             with Download() as downloader:
                 retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
-                peacesecurity = PeaceSecurity(configuration, retriever, folder)
+                peacesecurity = PeaceSecurity(configuration, retriever, folder, ErrorsOnExit())
                 dataset_names = peacesecurity.get_data(
                     {"DEFAULT": parse_date("2023-01-01")},
                     datasets="DPPADPOSS-FATALITIES",

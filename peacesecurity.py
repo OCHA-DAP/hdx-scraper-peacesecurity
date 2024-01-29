@@ -12,16 +12,18 @@ from datetime import datetime, timezone
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
+from hdx.utilities.downloader import DownloadError
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
 
 class PeaceSecurity:
-    def __init__(self, configuration, retriever, folder):
+    def __init__(self, configuration, retriever, folder, errors):
         self.configuration = configuration
         self.retriever = retriever
         self.folder = folder
+        self.errors = errors
         self.dataset_data = {}
         self.metadata = {}
 
@@ -41,7 +43,11 @@ class PeaceSecurity:
                 last_update_date = datetime.now(tz=timezone.utc)
             if last_update_date > state.get(dataset_id, state["DEFAULT"]):
                 data_url = f"{base_url}data/{dataset_id}/json"
-                data_json = self.retriever.download_json(data_url)
+                try:
+                    data_json = self.retriever.download_json(data_url)
+                except DownloadError:
+                    self.errors.add(f"Could not download {dataset_id}")
+                    continue
                 self.dataset_data[dataset_id] = data_json
                 self.metadata[dataset_id] = meta_json
                 state[dataset_id] = last_update_date
@@ -87,7 +93,7 @@ class PeaceSecurity:
         if end_date:
             ongoing = False
         if not start_date:
-            logger.error(f"Start date missing for {dataset_name}")
+            self.errors.add(f"Start date missing for {dataset_name}")
             return None, None
         dataset.set_time_period(start_date, end_date, ongoing)
 
