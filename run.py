@@ -70,9 +70,9 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                             #     showcase.create_in_hdx()
                             #     showcase.add_dataset(dataset)
 
-                if len(errors) > 0:
+                if len(errors.errors) > 0:
                     with open("errors.txt", "w") as fp:
-                        fp.write("\n".join(errors))
+                        fp.write("\n".join(errors.errors))
             state.set(state_dict)
 
 
