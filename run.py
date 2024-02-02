@@ -44,7 +44,6 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                     peacesecurity = PeaceSecurity(configuration, retriever, folder, errors)
                     dataset_names = peacesecurity.get_data(
                         state_dict,
-                        datasets=["DPO-UCLATEST", "DPO-UCHISTORICAL", "DPPADPOSS-FATALITIES", "DPPADPOSS-PKO"],
                     )
                     logger.info(f"Number of datasets to upload: {len(dataset_names)}")
 
@@ -66,9 +65,9 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                                 batch=batch,
                                 ignore_fields=["resource:description"],
                             )
-                            if showcase:
-                                showcase.create_in_hdx()
-                                showcase.add_dataset(dataset)
+                            # if showcase:
+                            #     showcase.create_in_hdx()
+                            #     showcase.add_dataset(dataset)
             state.set(state_dict)
 
 
