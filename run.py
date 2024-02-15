@@ -8,6 +8,7 @@ from copy import deepcopy
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.data.hdxobject import HDXError
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
 from hdx.utilities.errors_onexit import ErrorsOnExit
@@ -15,7 +16,7 @@ from hdx.utilities.path import progress_storing_folder, wheretostart_tempdir_bat
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.state import State
 
-from peacesecurity import PeaceSecurity
+from peacesecurity import PeaceSecurity, update_state
 
 logger = logging.getLogger(__name__)
 
@@ -59,13 +60,17 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                             dataset["notes"] = dataset["notes"].replace(
                                 "\n", "  \n"
                             )  # ensure markdown has line breaks
-                            dataset.create_in_hdx(
-                                remove_additional_resources=True,
-                                hxl_update=False,
-                                updated_by_script=updated_by_script,
-                                batch=batch,
-                                ignore_fields=["resource:description"],
-                            )
+                            try:
+                                dataset.create_in_hdx(
+                                    remove_additional_resources=True,
+                                    hxl_update=False,
+                                    updated_by_script=updated_by_script,
+                                    batch=batch,
+                                    ignore_fields=["resource:description"],
+                                )
+                            except HDXError:
+                                errors.add(f"Could not upload {dataset_name}")
+                                continue
                             # if showcase:
                             #     showcase.create_in_hdx()
                             #     showcase.add_dataset(dataset)
@@ -73,12 +78,14 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                 if len(errors.errors) > 0:
                     with open("errors.txt", "w") as fp:
                         fp.write("\n".join(errors.errors))
+                    state_dict = update_state(state_dict, state, errors)
             state.set(state_dict)
 
 
 if __name__ == "__main__":
     facade(
         main,
+        hdx_site="stage",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=lookup,
         project_config_yaml=join("config", "project_configuration.yml")

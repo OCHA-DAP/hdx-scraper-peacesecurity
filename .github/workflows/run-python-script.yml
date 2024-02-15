@@ -29,12 +29,12 @@ jobs:
         USER_AGENT: ${{ secrets.USER_AGENT }}
       run: |
         python run.py
-    - name: Commit updated data bundle
+    - name: Commit logs
       if: always()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: "dataset_dates.txt"
-        commit_message: automatic - Data bundle updated
+        file_pattern: dataset_dates.txt errors.txt
+        commit_message: automatic - text files updated
         push_options: "--force"
         skip_dirty_check: false
     - name: Send mail
