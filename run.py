@@ -66,7 +66,7 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                                     hxl_update=False,
                                     updated_by_script=updated_by_script,
                                     batch=batch,
-                                    ignore_fields=["resource:description"],
+                                    ignore_fields=["resource:description", "extras"],
                                 )
                             except HDXError:
                                 errors.add(f"Could not upload {dataset_name}")
