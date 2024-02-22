@@ -95,7 +95,7 @@ class TestPeaceSecurity:
                 )
                 assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
 
-                dataset, showcase = peacesecurity.generate_dataset_and_showcase("DPPADPOSS-FATALITIES", configuration)
+                dataset, showcase = peacesecurity.generate_dataset_and_showcase("DPPADPOSS-FATALITIES")
                 assert dataset == self.dataset
                 resources = dataset.get_resources()
                 assert resources[0] == self.resource
