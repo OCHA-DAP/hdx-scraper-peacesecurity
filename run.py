@@ -84,5 +84,5 @@ if __name__ == "__main__":
         main,
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=lookup,
-        project_config_yaml=join("config", "project_configuration.yml")
+        project_config_yaml=join("config", "project_configuration.yaml")
     )
