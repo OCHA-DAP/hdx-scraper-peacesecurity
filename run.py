@@ -36,7 +36,6 @@ def main(save: bool = False, use_saved: bool = False) -> None:
             with wheretostart_tempdir_batch(lookup) as info:
                 folder = info["folder"]
                 with Download() as downloader:
-                    open("errors.txt", "w").close()
                     retriever = Retrieve(
                         downloader, folder, "saved_data", folder, save, use_saved
                     )
@@ -72,10 +71,6 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                             #     showcase.create_in_hdx()
                             #     showcase.add_dataset(dataset)
 
-                if len(errors.errors) > 0:
-                    with open("errors.txt", "w") as fp:
-                        fp.write("\n".join(errors.errors))
-                    state_dict = update_state(state_dict, state, errors)
             state.set(state_dict)
 
 

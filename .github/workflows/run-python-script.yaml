@@ -30,10 +30,10 @@ jobs:
       run: |
         python run.py
     - name: Commit logs
-      if: always()
+      if: success()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        file_pattern: dataset_dates.txt errors.txt
+        file_pattern: dataset_dates.txt
         commit_message: automatic - text files updated
         push_options: "--force"
         skip_dirty_check: false
@@ -46,7 +46,7 @@ jobs:
         username: ${{secrets.EMAIL_USERNAME}}
         password: ${{secrets.EMAIL_PASSWORD}}
         subject: "FAILED: ${{github.repository}} run job"
-        body: file://errors.txt
+        body: GitHub Actions run job for ${{github.repository}} failed!
         to: ${{secrets.EMAIL_LIST}}
         from: ${{secrets.EMAIL_FROM}}
         content_type: text/html

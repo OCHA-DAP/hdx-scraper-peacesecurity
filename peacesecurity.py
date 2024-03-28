@@ -18,19 +18,6 @@ from slugify import slugify
 logger = logging.getLogger(__name__)
 
 
-def update_state(state_dict, state, errors):
-    for error in errors.errors:
-        if error[:16] != "Could not upload":
-            continue
-        dataset_name = error[17:]
-        old_state = state.get().get(dataset_name)
-        if old_state:
-            state_dict[dataset_name] = old_state
-        else:
-            state_dict[dataset_name] = state.get()["DEFAULT"]
-    return state_dict
-
-
 class PeaceSecurity:
     def __init__(self, configuration, retriever, folder, errors):
         self.configuration = configuration
