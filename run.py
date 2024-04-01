@@ -16,7 +16,7 @@ from hdx.utilities.path import progress_storing_folder, wheretostart_tempdir_bat
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.state import State
 
-from peacesecurity import PeaceSecurity, update_state
+from peacesecurity import PeaceSecurity
 
 logger = logging.getLogger(__name__)
 
