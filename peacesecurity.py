@@ -26,6 +26,7 @@ class PeaceSecurity:
         self.errors = errors
         self.dataset_data = {}
         self.metadata = {}
+        self.dataset_ids = []
 
     def get_data(self, state, datasets=None):
         base_url = self.configuration["base_url"]
@@ -34,6 +35,9 @@ class PeaceSecurity:
 
         for meta_json in meta_jsons:
             dataset_id = meta_json["Dataset ID"]
+            hdx_dataset_id = self.configuration["dataset_names"].get(dataset_id, dataset_id)
+            hdx_dataset_id = slugify(hdx_dataset_id)
+            self.dataset_ids.append(hdx_dataset_id)
             if datasets and dataset_id not in datasets:
                 continue
             last_update_date = meta_json["Last Update Date"]
@@ -53,6 +57,15 @@ class PeaceSecurity:
                 state[dataset_id] = last_update_date
 
         return [{"name": dataset_name} for dataset_name in sorted(self.dataset_data)]
+
+    def check_hdx_datasets(self):
+        datasets = Dataset.search_in_hdx(fq="organization:unpeacesecurity")
+        private_datasets = []
+        for dataset in datasets:
+            if dataset["name"] not in self.dataset_ids and not dataset["private"]:
+                dataset["private"] = True
+                private_datasets.append(dataset)
+        return private_datasets
 
     def generate_dataset_and_showcase(self, dataset_name):
         rows = self.dataset_data[dataset_name]

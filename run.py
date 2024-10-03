@@ -46,8 +46,23 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                     dataset_names = peacesecurity.get_data(
                         state_dict,
                     )
-                    logger.info(f"Number of datasets to upload: {len(dataset_names)}")
+                    private_datasets = peacesecurity.check_hdx_datasets()
+                    logger.info(f"Number of datasets to set private: {len(private_datasets)}")
+                    for dataset in private_datasets:
+                        try:
+                            dataset.update_in_hdx(
+                                update_resources=False,
+                                hxl_update=False,
+                                operation="patch",
+                                batch_mode="KEEP_OLD",
+                                updated_by_script=updated_by_script,
+                                ignore_fields=["resource:description", "extras"],
+                            )
+                        except HDXError:
+                            errors.add(f"Could not make {dataset['name']} private")
+                            continue
 
+                    logger.info(f"Number of datasets to upload: {len(dataset_names)}")
                     for _, nextdict in progress_storing_folder(info, dataset_names, "name"):
                         dataset_name = nextdict["name"]
                         dataset, showcase = peacesecurity.generate_dataset_and_showcase(dataset_name)
