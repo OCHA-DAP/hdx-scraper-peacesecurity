@@ -1,13 +1,7 @@
-#!/usr/bin/python
-"""
-Unit tests for peacekeeping.
-
-"""
 from os.path import join
 
 import pytest
 from hdx.api.configuration import Configuration
-from hdx.data.vocabulary import Vocabulary
 from hdx.utilities.compare import assert_files_same
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import Download
@@ -16,25 +10,44 @@ from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
 
-from peacesecurity import PeaceSecurity
+from src.hdx.scraper.peacesecurity.peacesecurity import PeaceSecurity
 
 
 class TestPeaceSecurity:
     dataset = {
-        "data_update_frequency": "1",
-        "dataset_date": "[1948-01-01T00:00:00 TO *]",
-        "groups": [{"name": "world"}],
-        "maintainer": "0d34fa8f-de81-43cc-9c1b-7053455e2e74",
         "name": "peacekeeping-fatalities",
-        "notes": "This dataset provides figures on staff and peacekeeper fatalities in Peacekeeping and Special Political Missions from 1948-Present, based on the receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The dataset specifies details such as casualty mission, casualty nationality and type of incident.",
+        "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and "
+        "SPMs since 1948",
+        "maintainer": "aa13de36-28c5-47a7-8d0b-6d7c754ba8c8",
         "owner_org": "8cb62b36-c3cc-4c7a-aae7-a63e2d480ffc",
+        "data_update_frequency": "1",
         "subnational": "0",
+        "groups": [{"name": "world"}],
+        "notes": "This dataset provides figures on staff and peacekeeper fatalities in "
+        "Peacekeeping and Special Political Missions from 1948-Present, based on the "
+        "receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The "
+        "dataset specifies details such as casualty mission, casualty nationality and "
+        "type of incident.",
         "tags": [
-            {'name': 'complex emergency-conflict-security', 'vocabulary_id': '4e61d464-4943-4e97-973a-84673c1aaa87'},
-            {'name': 'fatalities', 'vocabulary_id': '4e61d464-4943-4e97-973a-84673c1aaa87'},
-            {'name': 'peacekeeping', 'vocabulary_id': '4e61d464-4943-4e97-973a-84673c1aaa87'},
+            {
+                "name": "complex emergency-conflict-security",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
+            {
+                "name": "fatalities",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
+            {
+                "name": "peacekeeping",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
         ],
-        "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and SPMs since 1948",
+        "dataset_date": "[1948-01-01T00:00:00 TO *]",
+        "license_id": "cc-by-igo",
+        "methodology": "Registry",
+        "dataset_source": "Peace and Security Pillar",
+        "package_creator": "HDX Data Systems Team",
+        "private": False,
     }
     resource = {
         "description": "",
@@ -45,60 +58,84 @@ class TestPeaceSecurity:
     }
     showcase = {
         "name": "dppadposs-fatalities-showcase",
-        "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and SPMs since 1948 Showcase",
-        "notes": "This dataset provides figures on staff and peacekeeper fatalities in Peacekeeping and Special Political Missions from 1948-Present, based on the receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The dataset specifies details such as casualty mission, casualty nationality and type of incident.",
+        "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and "
+        "SPMs since 1948 Showcase",
+        "notes": "This dataset provides figures on staff and peacekeeper fatalities in "
+        "Peacekeeping and Special Political Missions from 1948-Present, based on the "
+        "receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The "
+        "dataset specifies details such as casualty mission, casualty nationality and "
+        "type of incident.",
         "url": "https://app.powerbi.com/view?r=eyJrIjoiOTFiYTdhZTktNTA4NC00MWE4LWI4Y2EtMGY4MmY0NmNmOGI5IiwidCI6IjBmOWUzNWRiLTU0NGYtNGY2MC1iZGNjLTVlYTQxNmU2ZGM3MCIsImMiOjh9",
         "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/config/view_dashboard.jpg",
         "tags": [
-            {"name": "complex emergency-conflict-security", "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87"},
-            {"name": "fatalities", "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87"},
-            {"name": "peacekeeping", "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87"},
-        ]
+            {
+                "name": "complex emergency-conflict-security",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
+            {
+                "name": "fatalities",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
+            {
+                "name": "peacekeeping",
+                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+            },
+        ],
     }
 
     @pytest.fixture(scope="function")
-    def fixtures(self):
-        return join("tests", "fixtures")
-
-    @pytest.fixture(scope="function")
-    def configuration(self):
+    def configuration(self, config_dir):
+        UserAgent.set_global("test")
         Configuration._create(
             hdx_read_only=True,
-            user_agent="test",
-            project_config_yaml=join("config", "project_configuration.yaml"),
+            hdx_site="prod",
+            project_config_yaml=join(config_dir, "project_configuration.yaml"),
         )
-        UserAgent.set_global("test")
-        tags = (
-            "complex emergency-conflict-security",
-            "peacekeeping",
-            "fatalities",
-        )
-        Vocabulary._tags_dict = {tag: {"Action to Take": "ok"} for tag in tags}
-        tags = [{"name": tag} for tag in tags]
-        Vocabulary._approved_vocabulary = {
-            "tags": tags,
-            "id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-            "name": "approved",
-        }
         return Configuration.read()
 
-    def test_generate_dataset_and_showcase(self, configuration, fixtures):
+    @pytest.fixture(scope="class")
+    def fixtures_dir(self):
+        return join("tests", "fixtures")
+
+    @pytest.fixture(scope="class")
+    def input_dir(self, fixtures_dir):
+        return join(fixtures_dir, "input")
+
+    @pytest.fixture(scope="class")
+    def config_dir(self, fixtures_dir):
+        return join("src", "hdx", "scraper", "peacesecurity", "config")
+
+    def test_peacesecurity(self, configuration, fixtures_dir, input_dir, config_dir):
         with temp_dir(
-            "test_peacesecurity", delete_on_success=True, delete_on_failure=False
-        ) as folder:
-            with Download() as downloader:
-                retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
-                peacesecurity = PeaceSecurity(configuration, retriever, folder, ErrorsOnExit())
+            "test_peacesecurity",
+            delete_on_success=True,
+            delete_on_failure=False,
+        ) as tempdir:
+            with Download(user_agent="test") as downloader:
+                retriever = Retrieve(
+                    downloader=downloader,
+                    fallback_dir=tempdir,
+                    saved_dir=input_dir,
+                    temp_dir=tempdir,
+                    save=False,
+                    use_saved=True,
+                )
+                peacesecurity = PeaceSecurity(
+                    configuration, retriever, tempdir, ErrorsOnExit()
+                )
                 dataset_names = peacesecurity.get_data(
                     {"DEFAULT": parse_date("2023-01-01")},
                     datasets="DPPADPOSS-FATALITIES",
                 )
                 assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
 
-                dataset, showcase = peacesecurity.generate_dataset_and_showcase("DPPADPOSS-FATALITIES")
+                dataset, showcase = peacesecurity.generate_dataset_and_showcase(
+                    "DPPADPOSS-FATALITIES"
+                )
+                dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
                 assert dataset == self.dataset
                 resources = dataset.get_resources()
                 assert resources[0] == self.resource
                 file = "dppadposs-fatalities.csv"
-                assert_files_same(join("tests", "fixtures", file), join(folder, file))
+                assert_files_same(join(input_dir, file), join(tempdir, file))
                 assert showcase == self.showcase
