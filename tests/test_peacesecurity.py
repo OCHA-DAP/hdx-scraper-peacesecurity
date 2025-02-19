@@ -10,7 +10,7 @@ from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
 
-from src.hdx.scraper.peacesecurity.peacesecurity import PeaceSecurity
+from hdx.scraper.peacesecurity.peacesecurity import PeaceSecurity
 
 
 class TestPeaceSecurity:

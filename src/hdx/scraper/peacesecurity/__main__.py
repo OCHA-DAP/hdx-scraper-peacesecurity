@@ -21,7 +21,7 @@ from hdx.utilities.path import (
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.state import State
 
-from src.hdx.scraper.peacesecurity.peacesecurity import PeaceSecurity
+from hdx.scraper.peacesecurity.peacesecurity import PeaceSecurity
 
 logger = logging.getLogger(__name__)
 
