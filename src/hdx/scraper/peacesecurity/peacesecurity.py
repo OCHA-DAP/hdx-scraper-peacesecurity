@@ -22,12 +22,10 @@ class PeaceSecurity:
         self,
         configuration: Configuration,
         retriever: Retrieve,
-        folder: str,
         error_handler: HDXErrorHandler,
     ):
         self.configuration = configuration
         self.retriever = retriever
-        self.folder = folder
         self.error_handler = error_handler
         self.dataset_data = {}
         self.metadata = {}
@@ -147,7 +145,7 @@ class PeaceSecurity:
                 row[date_header] = row_date
 
         dataset.generate_resource_from_rows(
-            self.folder,
+            self.retriever.temp_dir,
             filename,
             rows,
             resourcedata,

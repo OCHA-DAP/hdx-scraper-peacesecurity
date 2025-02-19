@@ -121,9 +121,7 @@ class TestPeaceSecurity:
                         save=False,
                         use_saved=True,
                     )
-                    peacesecurity = PeaceSecurity(
-                        configuration, retriever, tempdir, error_handler
-                    )
+                    peacesecurity = PeaceSecurity(configuration, retriever, error_handler)
                     dataset_names = peacesecurity.get_data(
                         {"DEFAULT": parse_date("2023-01-01")},
                         datasets="DPPADPOSS-FATALITIES",

@@ -66,9 +66,7 @@ def main(
                     folder = info["folder"]
                     batch = info["batch"]
                     configuration = Configuration.read()
-                    peacesecurity = PeaceSecurity(
-                        configuration, retriever, folder, error_handler
-                    )
+                    peacesecurity = PeaceSecurity(configuration, retriever, error_handler)
                     dataset_names = peacesecurity.get_data(
                         state_dict,
                     )
