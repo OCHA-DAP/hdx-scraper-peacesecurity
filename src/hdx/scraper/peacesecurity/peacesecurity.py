@@ -6,11 +6,11 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 
 from hdx.api.configuration import Configuration
+from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import DownloadError
-from hdx.utilities.errors_onexit import ErrorsOnExit
 from hdx.utilities.retriever import Retrieve
 from slugify import slugify
 
@@ -23,12 +23,12 @@ class PeaceSecurity:
         configuration: Configuration,
         retriever: Retrieve,
         folder: str,
-        errors: ErrorsOnExit,
+        error_handler: HDXErrorHandler,
     ):
         self.configuration = configuration
         self.retriever = retriever
         self.folder = folder
-        self.errors = errors
+        self.error_handler = error_handler
         self.dataset_data = {}
         self.metadata = {}
         self.dataset_ids = []
@@ -59,7 +59,11 @@ class PeaceSecurity:
                 try:
                     data_json = self.retriever.download_json(data_url)
                 except DownloadError:
-                    self.errors.add(f"Could not download {dataset_id}")
+                    self.error_handler.add_message(
+                        "PeaceSecurity",
+                        dataset_id,
+                        "Could not download",
+                    )
                     continue
                 self.dataset_data[dataset_id] = data_json
                 self.metadata[dataset_id] = meta_json
@@ -119,7 +123,11 @@ class PeaceSecurity:
         if end_date:
             ongoing = False
         if not start_date:
-            self.errors.add(f"Start date missing for {dataset_name}")
+            self.error_handler.add_message(
+                "PeaceSecurity",
+                dataset_name,
+                "Start date missing",
+            )
             return None, None
         dataset.set_time_period(start_date, end_date, ongoing)
 

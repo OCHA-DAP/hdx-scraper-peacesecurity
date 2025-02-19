@@ -2,10 +2,10 @@ from os.path import join
 
 import pytest
 from hdx.api.configuration import Configuration
+from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.utilities.compare import assert_files_same
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import Download
-from hdx.utilities.errors_onexit import ErrorsOnExit
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
@@ -106,36 +106,39 @@ class TestPeaceSecurity:
         return join("src", "hdx", "scraper", "peacesecurity", "config")
 
     def test_peacesecurity(self, configuration, fixtures_dir, input_dir, config_dir):
-        with temp_dir(
-            "test_peacesecurity",
-            delete_on_success=True,
-            delete_on_failure=False,
-        ) as tempdir:
-            with Download(user_agent="test") as downloader:
-                retriever = Retrieve(
-                    downloader=downloader,
-                    fallback_dir=tempdir,
-                    saved_dir=input_dir,
-                    temp_dir=tempdir,
-                    save=False,
-                    use_saved=True,
-                )
-                peacesecurity = PeaceSecurity(
-                    configuration, retriever, tempdir, ErrorsOnExit()
-                )
-                dataset_names = peacesecurity.get_data(
-                    {"DEFAULT": parse_date("2023-01-01")},
-                    datasets="DPPADPOSS-FATALITIES",
-                )
-                assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
+        with HDXErrorHandler() as error_handler:
+            with temp_dir(
+                "test_peacesecurity",
+                delete_on_success=True,
+                delete_on_failure=False,
+            ) as tempdir:
+                with Download(user_agent="test") as downloader:
+                    retriever = Retrieve(
+                        downloader=downloader,
+                        fallback_dir=tempdir,
+                        saved_dir=input_dir,
+                        temp_dir=tempdir,
+                        save=False,
+                        use_saved=True,
+                    )
+                    peacesecurity = PeaceSecurity(
+                        configuration, retriever, tempdir, error_handler
+                    )
+                    dataset_names = peacesecurity.get_data(
+                        {"DEFAULT": parse_date("2023-01-01")},
+                        datasets="DPPADPOSS-FATALITIES",
+                    )
+                    assert dataset_names == [{"name": "DPPADPOSS-FATALITIES"}]
 
-                dataset, showcase = peacesecurity.generate_dataset_and_showcase(
-                    "DPPADPOSS-FATALITIES"
-                )
-                dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
-                assert dataset == self.dataset
-                resources = dataset.get_resources()
-                assert resources[0] == self.resource
-                file = "dppadposs-fatalities.csv"
-                assert_files_same(join(input_dir, file), join(tempdir, file))
-                assert showcase == self.showcase
+                    dataset, showcase = peacesecurity.generate_dataset_and_showcase(
+                        "DPPADPOSS-FATALITIES"
+                    )
+                    dataset.update_from_yaml(
+                        path=join(config_dir, "hdx_dataset_static.yaml")
+                    )
+                    assert dataset == self.dataset
+                    resources = dataset.get_resources()
+                    assert resources[0] == self.resource
+                    file = "dppadposs-fatalities.csv"
+                    assert_files_same(join(input_dir, file), join(tempdir, file))
+                    assert showcase == self.showcase

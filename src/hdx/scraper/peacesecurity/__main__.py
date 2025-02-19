@@ -10,10 +10,10 @@ from copy import deepcopy
 from os.path import dirname, expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.hdxobject import HDXError
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
-from hdx.utilities.errors_onexit import ErrorsOnExit
 from hdx.utilities.path import (
     progress_storing_folder,
     wheretostart_tempdir_batch,
@@ -30,9 +30,22 @@ _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: peacesecurity"
 
 
-def main(save: bool = False, use_saved: bool = False) -> None:
-    """Generate datasets and create them in HDX"""
-    with ErrorsOnExit() as errors:
+def main(
+    save: bool = True,
+    use_saved: bool = False,
+    err_to_hdx: bool = False,
+) -> None:
+    """Generate datasets and create them in HDX
+
+    Args:
+        save (bool): Save downloaded data. Defaults to True.
+        use_saved (bool): Use saved data. Defaults to False.
+        err_to_hdx (bool): Whether to write any errors to HDX metadata. Defaults to False.
+
+    Returns:
+        None
+    """
+    with HDXErrorHandler(write_to_hdx=err_to_hdx) as error_handler:
         with State(
             "dataset_dates.txt",
             State.dates_str_to_country_date_dict,
@@ -54,7 +67,7 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                     batch = info["batch"]
                     configuration = Configuration.read()
                     peacesecurity = PeaceSecurity(
-                        configuration, retriever, folder, errors
+                        configuration, retriever, folder, error_handler
                     )
                     dataset_names = peacesecurity.get_data(
                         state_dict,
@@ -77,7 +90,9 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                                 ],
                             )
                         except HDXError:
-                            errors.add(f"Could not make {dataset['name']} private")
+                            error_handler.add_message(
+                                "PeaceSecurity", dataset["name"], "Could not make private"
+                            )
                             continue
 
                     logger.info(f"Number of datasets to upload: {len(dataset_names)}")
@@ -105,7 +120,9 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                                     ],
                                 )
                             except HDXError:
-                                errors.add(f"Could not upload {dataset_name}")
+                                error_handler.add_message(
+                                    "PeaceSecurity", dataset_name, "Could not upload"
+                                )
                                 continue
                             # if showcase:
                             #     showcase.create_in_hdx()
