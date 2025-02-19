@@ -47,7 +47,7 @@ def main(
     """
     with HDXErrorHandler(write_to_hdx=err_to_hdx) as error_handler:
         with State(
-            "dataset_dates.txt",
+            join(dirname(__file__), "dataset_dates.txt"),
             State.dates_str_to_country_date_dict,
             State.country_date_dict_to_dates_str,
         ) as state:
@@ -63,7 +63,6 @@ def main(
                         save,
                         use_saved,
                     )
-                    folder = info["folder"]
                     batch = info["batch"]
                     configuration = Configuration.read()
                     peacesecurity = PeaceSecurity(configuration, retriever, error_handler)
