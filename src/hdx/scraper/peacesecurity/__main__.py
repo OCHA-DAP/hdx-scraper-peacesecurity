@@ -101,7 +101,13 @@ def main(
                             dataset_name
                         )
                         if dataset:
-                            dataset.update_from_yaml()
+                            dataset.update_from_yaml(
+                                path=join(
+                                    dirname(__file__),
+                                    "config",
+                                    "hdx_dataset_static.yaml",
+                                )
+                            )
                             dataset["notes"] = dataset["notes"].replace(
                                 "\n", "  \n"
                             )  # ensure markdown has line breaks
