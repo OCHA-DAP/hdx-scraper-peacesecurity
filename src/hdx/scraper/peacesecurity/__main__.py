@@ -54,7 +54,7 @@ def main(
             state_dict = deepcopy(state.get())
             with wheretostart_tempdir_batch(_USER_AGENT_LOOKUP) as info:
                 folder = info["folder"]
-                with Download(verify=False) as downloader:
+                with Download() as downloader:
                     retriever = Retrieve(
                         downloader,
                         folder,
