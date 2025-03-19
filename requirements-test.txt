@@ -4,7 +4,7 @@ annotated-types==0.7.0
     # via
     #   -c requirements.txt
     #   pydantic
-attrs==25.1.0
+attrs==25.3.0
     # via
     #   -c requirements.txt
     #   frictionless
@@ -31,7 +31,7 @@ click==8.1.8
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.6.12
+coverage==7.7.0
     # via pytest-cov
 defopt==6.4.0
     # via
@@ -70,7 +70,7 @@ hdx-python-country==3.8.8
     # via
     #   -c requirements.txt
     #   hdx-python-api
-hdx-python-utilities==3.8.4
+hdx-python-utilities==3.8.5
     # via
     #   -c requirements.txt
     #   hdx-scraper-peacesecurity (pyproject.toml)
@@ -99,7 +99,7 @@ isodate==0.7.2
     # via
     #   -c requirements.txt
     #   frictionless
-jinja2==3.1.5
+jinja2==3.1.6
     # via
     #   -c requirements.txt
     #   frictionless
@@ -194,7 +194,7 @@ pyphonetics==0.5.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-pytest==8.3.4
+pytest==8.3.5
     # via
     #   hdx-scraper-peacesecurity (pyproject.toml)
     #   pytest-cov
@@ -253,7 +253,7 @@ rich==13.9.4
     # via
     #   -c requirements.txt
     #   typer
-rpds-py==0.22.3
+rpds-py==0.23.1
     # via
     #   -c requirements.txt
     #   jsonschema
@@ -266,7 +266,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==75.8.0
+setuptools==76.1.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -297,7 +297,7 @@ stringcase==1.2.0
     # via
     #   -c requirements.txt
     #   frictionless
-structlog==25.1.0
+structlog==25.2.0
     # via
     #   -c requirements.txt
     #   libhxl
@@ -321,7 +321,7 @@ typeguard==4.4.2
     # via
     #   -c requirements.txt
     #   inflect
-typer==0.15.1
+typer==0.15.2
     # via
     #   -c requirements.txt
     #   frictionless

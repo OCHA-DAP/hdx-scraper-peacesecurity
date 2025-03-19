@@ -54,7 +54,7 @@ def main(
             state_dict = deepcopy(state.get())
             with wheretostart_tempdir_batch(_USER_AGENT_LOOKUP) as info:
                 folder = info["folder"]
-                with Download() as downloader:
+                with Download(verify=False) as downloader:
                     retriever = Retrieve(
                         downloader,
                         folder,
@@ -69,11 +69,9 @@ def main(
                     dataset_names = peacesecurity.get_data(
                         state_dict,
                     )
-                    private_datasets = peacesecurity.check_hdx_datasets()
-                    logger.info(
-                        f"Number of datasets to set private: {len(private_datasets)}"
-                    )
-                    for dataset in private_datasets:
+                    archive_datasets = peacesecurity.check_hdx_datasets()
+                    logger.info(f"Number of datasets to archive: {len(archive_datasets)}")
+                    for dataset in archive_datasets:
                         try:
                             dataset.update_in_hdx(
                                 update_resources=False,
@@ -88,7 +86,7 @@ def main(
                             )
                         except HDXError:
                             error_handler.add_message(
-                                "PeaceSecurity", dataset["name"], "Could not make private"
+                                "PeaceSecurity", dataset["name"], "Could not archive"
                             )
                             continue
 

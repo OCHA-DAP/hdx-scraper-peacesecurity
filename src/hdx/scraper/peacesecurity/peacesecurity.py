@@ -71,12 +71,12 @@ class PeaceSecurity:
 
     def check_hdx_datasets(self) -> List[Dataset]:
         datasets = Dataset.search_in_hdx(fq="organization:unpeacesecurity")
-        private_datasets = []
+        archive_datasets = []
         for dataset in datasets:
-            if dataset["name"] not in self.dataset_ids and not dataset["private"]:
-                dataset["private"] = True
-                private_datasets.append(dataset)
-        return private_datasets
+            if dataset["name"] not in self.dataset_ids and not dataset["archived"]:
+                dataset["archived"] = True
+                archive_datasets.append(dataset)
+        return archive_datasets
 
     def generate_dataset_and_showcase(
         self, dataset_name
