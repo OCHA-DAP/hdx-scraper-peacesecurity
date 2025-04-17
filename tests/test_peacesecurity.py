@@ -66,7 +66,7 @@ class TestPeaceSecurity:
         "dataset specifies details such as casualty mission, casualty nationality and "
         "type of incident.",
         "url": "https://app.powerbi.com/view?r=eyJrIjoiOTFiYTdhZTktNTA4NC00MWE4LWI4Y2EtMGY4MmY0NmNmOGI5IiwidCI6IjBmOWUzNWRiLTU0NGYtNGY2MC1iZGNjLTVlYTQxNmU2ZGM3MCIsImMiOjh9",
-        "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/config/view_dashboard.jpg",
+        "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/src/hdx/scraper/peacesecurity/config/view_dashboard.jpg",
         "tags": [
             {
                 "name": "complex emergency-conflict-security",

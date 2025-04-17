@@ -15,3 +15,5 @@ allowed_tags:
   - "logistics"
   - "military"
   - "peacekeeping"
+
+jpeg_path: "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/src/hdx/scraper/peacesecurity/config/view_dashboard.jpg"

@@ -161,7 +161,7 @@ class PeaceSecurity:
                 "title": f"{dataset['title']} Showcase",
                 "notes": dataset["notes"],
                 "url": metadata["Visualization Link"],
-                "image_url": "https://raw.githubusercontent.com/OCHA-DAP/hdx-scraper-peacesecurity/main/config/view_dashboard.jpg",
+                "image_url": self.configuration["jpeg_path"],
             }
         )
         showcase.add_tags(tags)
