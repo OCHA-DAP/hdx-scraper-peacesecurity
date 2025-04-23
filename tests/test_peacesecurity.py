@@ -17,7 +17,7 @@ class TestPeaceSecurity:
     dataset = {
         "name": "peacekeeping-fatalities",
         "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and "
-        "SPMs since 1948",
+        "SPMs Since 1948",
         "maintainer": "aa13de36-28c5-47a7-8d0b-6d7c754ba8c8",
         "owner_org": "8cb62b36-c3cc-4c7a-aae7-a63e2d480ffc",
         "data_update_frequency": "1",
@@ -42,7 +42,7 @@ class TestPeaceSecurity:
                 "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
             },
         ],
-        "dataset_date": "[1948-01-01T00:00:00 TO *]",
+        "dataset_date": "[1948-07-06T00:00:00 TO 2023-11-28T23:59:59]",
         "license_id": "cc-by-igo",
         "methodology": "Registry",
         "dataset_source": "Peace and Security Pillar",
@@ -59,7 +59,7 @@ class TestPeaceSecurity:
     showcase = {
         "name": "dppadposs-fatalities-showcase",
         "title": "Peace and Security Pillar: Mission Fatalities - Fatalities in PKOs and "
-        "SPMs since 1948 Showcase",
+        "SPMs Since 1948 Showcase",
         "notes": "This dataset provides figures on staff and peacekeeper fatalities in "
         "Peacekeeping and Special Political Missions from 1948-Present, based on the "
         "receipt of official Notifications of Peacekeeper Casualties (NOTICAS).  The "

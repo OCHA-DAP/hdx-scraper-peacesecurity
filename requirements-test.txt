@@ -116,7 +116,7 @@ jsonschema==4.23.0
     #   -c requirements.txt
     #   frictionless
     #   tableschema-to-template
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via
     #   -c requirements.txt
     #   jsonschema
@@ -149,7 +149,7 @@ mdurl==0.1.2
     # via
     #   -c requirements.txt
     #   markdown-it-py
-more-itertools==10.6.0
+more-itertools==10.7.0
     # via
     #   -c requirements.txt
     #   inflect
@@ -161,7 +161,7 @@ openpyxl==3.1.5
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-packaging==24.2
+packaging==25.0
     # via pytest
 petl==1.7.16
     # via
@@ -266,7 +266,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==78.1.0
+setuptools==79.0.0
     # via
     #   -c requirements.txt
     #   ckanapi
