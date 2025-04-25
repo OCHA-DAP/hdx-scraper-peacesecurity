@@ -65,12 +65,16 @@ def main(
                     )
                     batch = info["batch"]
                     configuration = Configuration.read()
-                    peacesecurity = PeaceSecurity(configuration, retriever, error_handler)
+                    peacesecurity = PeaceSecurity(
+                        configuration, retriever, error_handler
+                    )
                     dataset_names = peacesecurity.get_data(
                         state_dict,
                     )
                     archive_datasets = peacesecurity.check_hdx_datasets()
-                    logger.info(f"Number of datasets to archive: {len(archive_datasets)}")
+                    logger.info(
+                        f"Number of datasets to archive: {len(archive_datasets)}"
+                    )
                     for dataset in archive_datasets:
                         try:
                             dataset.update_in_hdx(
@@ -98,36 +102,35 @@ def main(
                         dataset, showcase = peacesecurity.generate_dataset_and_showcase(
                             dataset_name
                         )
-                        if dataset:
-                            dataset.update_from_yaml(
-                                path=join(
-                                    dirname(__file__),
-                                    "config",
-                                    "hdx_dataset_static.yaml",
-                                )
+                        if not dataset:
+                            continue
+                        dataset.update_from_yaml(
+                            path=join(
+                                dirname(__file__), "config", "hdx_dataset_static.yaml"
                             )
-                            dataset["notes"] = dataset["notes"].replace(
-                                "\n", "  \n"
-                            )  # ensure markdown has line breaks
-                            try:
-                                dataset.create_in_hdx(
-                                    remove_additional_resources=True,
-                                    hxl_update=False,
-                                    updated_by_script=_UPDATED_BY_SCRIPT,
-                                    batch=batch,
-                                    ignore_fields=[
-                                        "resource:description",
-                                        "extras",
-                                    ],
-                                )
-                            except HDXError:
-                                error_handler.add_message(
-                                    "PeaceSecurity", dataset_name, "Could not upload"
-                                )
-                                continue
-                            # if showcase:
-                            #     showcase.create_in_hdx()
-                            #     showcase.add_dataset(dataset)
+                        )
+                        dataset["notes"] = dataset["notes"].replace(
+                            "\n", "  \n"
+                        )  # ensure markdown has line breaks
+                        try:
+                            dataset.create_in_hdx(
+                                remove_additional_resources=True,
+                                hxl_update=False,
+                                updated_by_script=_UPDATED_BY_SCRIPT,
+                                batch=batch,
+                                ignore_fields=[
+                                    "resource:description",
+                                    "extras",
+                                ],
+                            )
+                        except HDXError:
+                            error_handler.add_message(
+                                "PeaceSecurity", dataset_name, "Could not upload"
+                            )
+                            continue
+                        # if showcase:
+                        #     showcase.create_in_hdx()
+                        #     showcase.add_dataset(dataset)
 
             state.set(state_dict)
 

@@ -9,6 +9,7 @@ from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
+from hdx.location.country import Country
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import DownloadError
 from hdx.utilities.retriever import Retrieve
@@ -31,9 +32,7 @@ class PeaceSecurity:
         self.metadata = {}
         self.dataset_ids = []
 
-    def get_data(
-        self, state: Dict[str, str], datasets: Optional = None
-    ) -> List[Dict[str, str]]:
+    def get_data(self, state: Dict, datasets: Optional = None) -> List[Dict]:
         base_url = self.configuration["base_url"]
         meta_url = f"{base_url}metadata/all"
         meta_jsons = self.retriever.download_json(meta_url)
@@ -88,6 +87,13 @@ class PeaceSecurity:
             dataset_name, metadata["Dataset ID"]
         )
         title = f"Peace and Security Pillar: {metadata['Name']}"
+        words = title.split(" ")
+        for i, word in enumerate(words):
+            upper_case = sum(1 for c in word if c.isupper())
+            if upper_case > 1 or word in ["and", "by", "in", "for", "of", "the", "to"]:
+                continue
+            words[i] = word.title()
+        title = " ".join(words)
         dataset = Dataset({"name": slugify(name), "title": title})
         dataset.set_maintainer("0d34fa8f-de81-43cc-9c1b-7053455e2e74")
         dataset.set_organization("8cb62b36-c3cc-4c7a-aae7-a63e2d480ffc")
@@ -96,7 +102,11 @@ class PeaceSecurity:
             update_frequency = "adhoc"
         dataset.set_expected_update_frequency(update_frequency)
         dataset.set_subnational(False)
-        dataset.add_other_location("world")
+        countryiso3, exact = Country.get_iso3_country_code_fuzzy(metadata["Name"])
+        if countryiso3 and (countryiso3 != "GBR" and not exact):
+            dataset.add_country_location(countryiso3)
+        else:
+            dataset.add_other_location("world")
         dataset["notes"] = metadata["Description"]
         filename = f"{dataset_name.lower()}.csv"
         resourcedata = {
@@ -115,24 +125,11 @@ class PeaceSecurity:
         tags = sorted([t for t in tags if t in self.configuration["allowed_tags"]])
         dataset.add_tags(tags)
 
-        start_date = metadata["Start Range"]
-        end_date = metadata["End Range"]
-        ongoing = True
-        if end_date:
-            ongoing = False
-        if not start_date:
-            self.error_handler.add_message(
-                "PeaceSecurity",
-                dataset_name,
-                "Start date missing",
-            )
-            return None, None
-        dataset.set_time_period(start_date, end_date, ongoing)
-
         headers = rows[0].keys()
         date_headers = [
             h for h in headers if "date" in h.lower() and isinstance(rows[0][h], int)
         ]
+        dates = []
         for row in rows:
             for date_header in date_headers:
                 row_date = row[date_header]
@@ -141,8 +138,28 @@ class PeaceSecurity:
                 if len(str(row_date)) > 9:
                     row_date = row_date / 1000
                 row_date = datetime.utcfromtimestamp(row_date)
+                dates.append(row_date)
                 row_date = row_date.strftime("%Y-%m-%d")
                 row[date_header] = row_date
+
+        if len(dates) > 0:
+            start_date = min(dates)
+            end_date = max(dates)
+            ongoing = False
+        else:
+            start_date = metadata["Start Range"]
+            end_date = metadata["End Range"]
+            ongoing = True
+            if end_date:
+                ongoing = False
+        if not start_date:
+            self.error_handler.add_message(
+                "PeaceSecurity",
+                dataset_name,
+                "Start date missing",
+            )
+            return None, None
+        dataset.set_time_period(start_date, end_date, ongoing)
 
         dataset.generate_resource_from_rows(
             self.retriever.temp_dir,
