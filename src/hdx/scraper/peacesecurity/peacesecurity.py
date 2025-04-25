@@ -9,6 +9,7 @@ from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
+from hdx.location.country import Country
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import DownloadError
 from hdx.utilities.retriever import Retrieve
@@ -101,7 +102,11 @@ class PeaceSecurity:
             update_frequency = "adhoc"
         dataset.set_expected_update_frequency(update_frequency)
         dataset.set_subnational(False)
-        dataset.add_other_location("world")
+        countryiso3, exact = Country.get_iso3_country_code_fuzzy(metadata["Name"])
+        if countryiso3 and (countryiso3 != "GBR" and not exact):
+            dataset.add_country_location(countryiso3)
+        else:
+            dataset.add_other_location("world")
         dataset["notes"] = metadata["Description"]
         filename = f"{dataset_name.lower()}.csv"
         resourcedata = {
