@@ -11,7 +11,7 @@ attrs==25.3.0
     #   jsonlines
     #   jsonschema
     #   referencing
-certifi==2025.1.31
+certifi==2025.4.26
     # via
     #   -c requirements.txt
     #   requests
@@ -267,7 +267,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==79.0.1
+setuptools==80.0.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -294,7 +294,7 @@ sphinxcontrib-napoleon==0.7
     # via
     #   -c requirements.txt
     #   defopt
-structlog==25.2.0
+structlog==25.3.0
     # via
     #   -c requirements.txt
     #   libhxl
@@ -314,11 +314,15 @@ text-unidecode==1.3
     # via
     #   -c requirements.txt
     #   python-slugify
+truststore==0.10.1
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-peacesecurity (pyproject.toml)
 typeguard==4.4.2
     # via
     #   -c requirements.txt
     #   inflect
-typer==0.15.2
+typer==0.15.3
     # via
     #   -c requirements.txt
     #   frictionless
