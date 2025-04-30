@@ -9,7 +9,6 @@ import logging
 from copy import deepcopy
 from os.path import dirname, expanduser, join
 
-import truststore
 from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.hdxobject import HDXError
@@ -55,7 +54,6 @@ def main(
             state_dict = deepcopy(state.get())
             with wheretostart_tempdir_batch(_USER_AGENT_LOOKUP) as info:
                 folder = info["folder"]
-                truststore.inject_into_ssl()
                 with Download() as downloader:
                     retriever = Retrieve(
                         downloader,
