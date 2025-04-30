@@ -15,7 +15,7 @@ dependencies = [
   "hdx-python-api",
   "hdx-python-country",
   "hdx-python-utilities",
-  "pip-system-certs",
+  "truststore",
 ]
 
 dynamic = ["version"]
