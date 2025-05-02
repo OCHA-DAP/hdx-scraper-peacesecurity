@@ -13,6 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Add Comodo cert to trust store
+      run: |
+        sudo cp .github/certs/comodo.crt
+        sudo update-ca-certificates
     - name: Set up Python 3.x
       uses: actions/setup-python@v5
       with:
@@ -22,11 +26,6 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install .
-    - name: Download and trust Comodo cert
-      run: |
-        curl -o comodo.crt https://support.sectigo.com/files/ca/comodo_sha384_root.crt
-        sudo cp comodo.crt /usr/local/share/ca-certificates/
-        sudo update-ca-certificates
     - name: Run script
       env:
         HDX_SITE: ${{ vars.HDX_SITE }}
