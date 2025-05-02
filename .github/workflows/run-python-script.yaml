@@ -33,6 +33,7 @@ jobs:
         PREPREFIX: ${{ vars.HDX_USER_AGENT_PREPREFIX }}
         USER_AGENT: ${{ vars.USER_AGENT }}
         EXTRA_PARAMS: ${{ vars.EXTRA_PARAMS }}
+        SSL_CERT_DIR: "/usr/local/share/ca-certificates"
       run: |
         python -m hdx.scraper.peacesecurity
     - name: Commit logs
