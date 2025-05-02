@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Add Comodo cert to trust store
       run: |
-        sudo cp .github/certs/comodo.crt
+        sudo cp .github/certs/comodo.crt /usr/local/share/ca-certificates/comodo.crt
         sudo update-ca-certificates
     - name: Set up Python 3.x
       uses: actions/setup-python@v5
