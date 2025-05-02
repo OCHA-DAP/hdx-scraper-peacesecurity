@@ -7,6 +7,7 @@ script then creates in HDX.
 
 import logging
 from copy import deepcopy
+from os import getenv
 from os.path import dirname, expanduser, join
 
 import truststore
@@ -46,6 +47,8 @@ def main(
     Returns:
         None
     """
+    verify = getenv("VERIFY")
+    verify = False if verify and verify == "False" else True
     with HDXErrorHandler(write_to_hdx=err_to_hdx) as error_handler:
         with State(
             join(dirname(__file__), "dataset_dates.txt"),
@@ -56,7 +59,7 @@ def main(
             with wheretostart_tempdir_batch(_USER_AGENT_LOOKUP) as info:
                 folder = info["folder"]
                 truststore.inject_into_ssl()
-                with Download() as downloader:
+                with Download(verify=verify) as downloader:
                     retriever = Retrieve(
                         downloader,
                         folder,
