@@ -6,7 +6,6 @@ script then creates in HDX.
 """
 
 import logging
-import ssl
 from copy import deepcopy
 from os.path import dirname, expanduser, join
 
@@ -57,8 +56,7 @@ def main(
             with wheretostart_tempdir_batch(_USER_AGENT_LOOKUP) as info:
                 folder = info["folder"]
                 truststore.inject_into_ssl()
-                ctx = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-                with Download(ssl_context=ctx) as downloader:
+                with Download() as downloader:
                     retriever = Retrieve(
                         downloader,
                         folder,
