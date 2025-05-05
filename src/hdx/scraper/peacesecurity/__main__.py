@@ -51,7 +51,7 @@ def main(
     verify = False if verify and verify == "False" else True
     with HDXErrorHandler(write_to_hdx=err_to_hdx) as error_handler:
         with State(
-            join(dirname(__file__), "dataset_dates.txt"),
+            "dataset_dates.txt",
             State.dates_str_to_country_date_dict,
             State.country_date_dict_to_dates_str,
         ) as state:
