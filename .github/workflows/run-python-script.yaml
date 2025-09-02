@@ -32,14 +32,6 @@ jobs:
         VERIFY: ${{ vars.VERIFY }}
       run: |
         python -m hdx.scraper.peacesecurity
-    - name: Commit logs
-      if: success()
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        file_pattern: dataset_dates.txt
-        commit_message: automatic - text files updated
-        push_options: "--force"
-        skip_dirty_check: false
     - name: Send mail
       if: failure()
       uses: dawidd6/action-send-mail@v3
