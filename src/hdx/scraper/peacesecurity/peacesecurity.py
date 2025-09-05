@@ -93,7 +93,7 @@ class PeaceSecurity:
         dataset.set_subnational(False)
         try:
             countryiso3, exact = Country.get_iso3_country_code_fuzzy(metadata["Name"])
-        except KeyError:
+        except ValueError:
             logger.error(f"Could not get iso code from name: {metadata['Name']}")
             countryiso3 = None
             exact = False
