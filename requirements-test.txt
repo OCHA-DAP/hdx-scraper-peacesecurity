@@ -62,7 +62,7 @@ frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-hdx-python-api==6.5.0
+hdx-python-api==6.5.1
     # via
     #   -c requirements.txt
     #   hdx-scraper-peacesecurity (pyproject.toml)
@@ -198,7 +198,7 @@ pyphonetics==0.5.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-pytest==8.4.1
+pytest==8.4.2
     # via
     #   hdx-scraper-peacesecurity (pyproject.toml)
     #   pytest-cov

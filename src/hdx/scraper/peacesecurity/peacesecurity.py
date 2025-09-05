@@ -91,7 +91,12 @@ class PeaceSecurity:
             update_frequency = "adhoc"
         dataset.set_expected_update_frequency(update_frequency)
         dataset.set_subnational(False)
-        countryiso3, exact = Country.get_iso3_country_code_fuzzy(metadata["Name"])
+        try:
+            countryiso3, exact = Country.get_iso3_country_code_fuzzy(metadata["Name"])
+        except ValueError:
+            logger.error(f"Could not get iso code from name: {metadata['Name']}")
+            countryiso3 = None
+            exact = False
         if countryiso3 and (countryiso3 != "GBR" and not exact):
             dataset.add_country_location(countryiso3)
         else:
