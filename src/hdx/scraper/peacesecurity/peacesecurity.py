@@ -2,15 +2,13 @@
 """peacesecurity scraper"""
 
 import logging
-from datetime import datetime, timezone
-from typing import Dict, List, Optional, Tuple
+from datetime import datetime
+from typing import List, Optional
 
 from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.dataset import Dataset
-from hdx.data.showcase import Showcase
 from hdx.location.country import Country
-from hdx.utilities.dateparse import parse_date
 from hdx.utilities.downloader import DownloadError
 from hdx.utilities.retriever import Retrieve
 from slugify import slugify
@@ -32,7 +30,7 @@ class PeaceSecurity:
         self.metadata = {}
         self.dataset_ids = []
 
-    def get_data(self, state: Dict, datasets: Optional = None) -> List[Dict]:
+    def get_data(self, datasets: Optional = None) -> List[str]:
         base_url = self.configuration["base_url"]
         meta_url = f"{base_url}metadata/all"
         meta_jsons = self.retriever.download_json(meta_url)
@@ -46,27 +44,20 @@ class PeaceSecurity:
             self.dataset_ids.append(hdx_dataset_id)
             if datasets and dataset_id not in datasets:
                 continue
-            last_update_date = meta_json["Last Update Date"]
-            if last_update_date:
-                last_update_date = parse_date(last_update_date)
-            else:
-                last_update_date = datetime.now(tz=timezone.utc)
-            if last_update_date > state.get(dataset_id, state["DEFAULT"]):
-                data_url = f"{base_url}data/{dataset_id}/json"
-                try:
-                    data_json = self.retriever.download_json(data_url)
-                except DownloadError:
-                    self.error_handler.add_message(
-                        "PeaceSecurity",
-                        dataset_id,
-                        "Could not download",
-                    )
-                    continue
-                self.dataset_data[dataset_id] = data_json
-                self.metadata[dataset_id] = meta_json
-                state[dataset_id] = last_update_date
+            data_url = f"{base_url}data/{dataset_id}/json"
+            try:
+                data_json = self.retriever.download_json(data_url)
+            except DownloadError:
+                self.error_handler.add_message(
+                    "PeaceSecurity",
+                    dataset_id,
+                    "Could not download",
+                )
+                continue
+            self.dataset_data[dataset_id] = data_json
+            self.metadata[dataset_id] = meta_json
 
-        return [{"name": dataset_name} for dataset_name in sorted(self.dataset_data)]
+        return sorted(self.dataset_data)
 
     def check_hdx_datasets(self) -> List[Dataset]:
         datasets = Dataset.search_in_hdx(fq="organization:unpeacesecurity")
@@ -77,9 +68,7 @@ class PeaceSecurity:
                 archive_datasets.append(dataset)
         return archive_datasets
 
-    def generate_dataset_and_showcase(
-        self, dataset_name
-    ) -> Tuple[Optional:Dataset, Optional:Showcase]:
+    def generate_dataset(self, dataset_name) -> Optional[Dataset]:
         rows = self.dataset_data[dataset_name]
         metadata = self.metadata[dataset_name]
 
@@ -158,7 +147,7 @@ class PeaceSecurity:
                 dataset_name,
                 "Start date missing",
             )
-            return None, None
+            return None
         dataset.set_time_period(start_date, end_date, ongoing)
 
         dataset.generate_resource_from_rows(
@@ -169,18 +158,4 @@ class PeaceSecurity:
             list(rows[0].keys()),
         )
 
-        if not metadata["Visualization Link"]:
-            return dataset, None
-
-        showcase = Showcase(
-            {
-                "name": f"{slugify(dataset_name)}-showcase",
-                "title": f"{dataset['title']} Showcase",
-                "notes": dataset["notes"],
-                "url": metadata["Visualization Link"],
-                "image_url": self.configuration["jpeg_path"],
-            }
-        )
-        showcase.add_tags(tags)
-
-        return dataset, showcase
+        return dataset
