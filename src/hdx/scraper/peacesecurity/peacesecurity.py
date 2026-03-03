@@ -155,7 +155,7 @@ class PeaceSecurity:
             return None
         dataset.set_time_period(start_date, end_date, ongoing)
 
-        dataset.generate_resource_from_rows(
+        dataset.generate_resource(
             self.retriever.temp_dir,
             filename,
             rows,

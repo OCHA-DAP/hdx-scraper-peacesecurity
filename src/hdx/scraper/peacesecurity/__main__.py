@@ -63,7 +63,6 @@ def main(
                     try:
                         dataset.update_in_hdx(
                             update_resources=False,
-                            hxl_update=False,
                             operation="patch",
                             batch_mode="KEEP_OLD",
                             updated_by_script=_UPDATED_BY_SCRIPT,
@@ -94,7 +93,6 @@ def main(
                     try:
                         dataset.create_in_hdx(
                             remove_additional_resources=True,
-                            hxl_update=False,
                             updated_by_script=_UPDATED_BY_SCRIPT,
                             batch=info["batch"],
                             ignore_fields=[
